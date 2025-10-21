@@ -8,7 +8,7 @@ from datetime import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from .serializers import MenuSerializer
 
 # Create your views here.
 def home(request):
@@ -35,9 +35,11 @@ def book(request):
 
 # Add your code here to create new views
 def menu(request):
+    print("✅ menu view is called")  # 调试信息
     menu_data = Menu.objects.all()
     main_data = {"menu": menu_data}
-    return render(request, 'menu.html', {"menu": main_data})
+    serializer = MenuSerializer(menu_data, many=True)
+    return render(request, 'menu.html', {"menu": menu_data})
 
 
 def display_menu_item(request, pk=None): 
